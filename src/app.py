@@ -113,7 +113,7 @@ app.layout = html.Div([
 # Text descriptions for each figure
 figure_descriptions = {
     'fig1': """   
-    Source: Eurostat and national statistical institutes. Note: Figure 1 displays multiple 
+    Source: Bruegel based on Eurostat and national statistical institutes. Note: Figure 1 displays multiple 
     measures of year-on-year (yoy) inflation since January 2019. 
     The red line represents inflation faced by the top income quantile, the red line by the 
     bottom quantile and the dashed grey line by the total population. If the blue line is above 
@@ -124,7 +124,7 @@ figure_descriptions = {
     differently, slight differences are expected.
     """,
     'fig2': """   
-    Source: Eurostat and national statistical institutes. Note: Figure 2 shows ‘inflation inequality’,
+    Source: Bruegel based on Eurostat and national statistical institutes. Note: Figure 2 shows ‘inflation inequality’,
     the black line, defined here as the difference in inflation rates faced by low- and high-income 
     households. If the black line is in positive territory, low-income households face higher rates of yoy 
     inflation than high-income ones. The stacked bars show the contributions of each category of goods and services
@@ -135,7 +135,7 @@ figure_descriptions = {
     rising, or because its share is relatively smaller for the lower-income consumption and the price is decreasing.
     """,
     'fig3': """    
-    Source: Eurostat and national statistical institutes. Note: Figure 3 shows the two factors necessary 
+    Source: Bruegel based on Eurostat and national statistical institutes. Note: Figure 3 shows the two factors necessary 
     for a consumption category to affect inflation inequality: the change in price of that category of goods 
     and the difference between the share that it makes up of the consumption bundle of 
     low- and high-income households. 
