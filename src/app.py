@@ -67,18 +67,18 @@ country_dict = {
 
 # Intro text for the app
 app_intro_text = """
-    This website explores data on inflation inequality in the EU to shed light on how different households 
-    experience varying rates of inflation. Headline inflation, reflecting changes in the average household's 
-    consumption basket, can mask how different individuals across society are impacted differently by rising prices.
-    Conventional inflation metrics, relying on the Harmonized Index of Consumer Prices (HICP), often overlook 
-    differences in individual spending patterns. The analysis presented here leverages Household Budget Surveys (HBSs), 
-    to estimate consumption baskets and inflation rates for different income groups in each EU country.
+    This website explores consumption-based inflation inequality in the EU to shed light on how different income groups 
+    are affected by inflation. Headline inflation reflects changes in the average household's 
+    consumption basket and thus overlooks differences in individual spending patterns. Depending on the 
+    price changes of different consumption categories, differences in spending patterns can result in 
+    different rates of inflation. The analysis presented here leverages Household Budget Surveys (HBSs), 
+    to estimate consumption baskets and inflation rates for households across income groups and EU country.
     """
 
 # Layout of the Dash app
 app.layout = html.Div([
     html.H1(
-        "Inflation Inequality Dashboard", 
+        "Inflation Inequality in the EU", 
         style={
             'text-align': 'center', 
             'font-family': font_family
