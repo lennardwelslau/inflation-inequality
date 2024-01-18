@@ -65,6 +65,16 @@ country_dict = {
     'SK':'Slovakia'
     }
 
+# Intro text for the app
+app_intro_text = """
+    This website explores data on inflation inequality in the EU to shed light on how different households 
+    experience varying rates of inflation. Headline inflation, reflecting changes in the average household's 
+    consumption basket, can mask how different individuals across society are impacted differently by rising prices.
+    Conventional inflation metrics, relying on the Harmonized Index of Consumer Prices (HICP), often overlook 
+    differences in individual spending patterns. The analysis presented here leverages Household Budget Surveys (HBSs), 
+    to estimate consumption baskets and inflation rates for different income groups in each EU country.
+    """
+
 # Layout of the Dash app
 app.layout = html.Div([
     html.H1(
@@ -74,6 +84,11 @@ app.layout = html.Div([
             'font-family': font_family
             }
         ),  # Title
+
+    html.P(
+        app_intro_text,
+        style={'font-family': 'Arial, sans-serif', 'margin-bottom': '15px'}
+    ), # Intro text
 
     # Dropdown for country selection
     dcc.Dropdown(
@@ -165,7 +180,7 @@ figure_descriptions = {
 def update_selected_data(selected_country, selected_figure, display_table):
 
     # Select df based on selected figure and country
-    selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country]
+    selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].dropna(axis=1)
 
     # Define country-dependent variables
     if selected_country == 'Belgium':
