@@ -117,7 +117,7 @@ app.layout = html.Div([
     
     # Button to download the data table
     html.Button(
-        'Download Dataset', 
+        'Download dataset', 
         id='btn_download',
         style={
             'font-family': font_family,
@@ -133,9 +133,9 @@ app.layout = html.Div([
 
     # Boolean switch for displaying the data table
     daq.BooleanSwitch(
-        id='display-table-switch',
+        id='table-switch',
         on=False,
-        label='Display Data Table',
+        label='Show data table',
         style={
             'font-family': font_family,
             'margin-top': '5px', 
@@ -207,7 +207,7 @@ def func(n_clicks):
     Output('selected-figure', 'children'),
     [Input('country-dropdown', 'value'),
      Input('figure-dropdown', 'value'),
-     Input('display-table-switch', 'on')]  
+     Input('table-switch', 'on')]  
 )
 
 def update_selected_data(selected_country, selected_figure, display_table):
