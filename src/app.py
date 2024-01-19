@@ -360,12 +360,12 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 dict(
                     type="buttons",
                     buttons=[
-                        dict(label="Legend:   show",
+                        dict(label="Show legend",
                             method="relayout",
                             visible=True,
                             args=["showlegend", True]
                             ),
-                        dict(label="hide",
+                        dict(label="Hide legend",
                             method="relayout",
                             args=["showlegend", False]
                             )
@@ -376,7 +376,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     bgcolor= '#FFFFFF',
                     bordercolor= '#d0cccc',
                     font_color= '#424242',
-                    borderwidth= 0.5,
+                    borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
                     x=0.,
@@ -424,12 +424,12 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 dict(
                     type="buttons",
                     buttons=[
-                        dict(label="Legend:   show",
+                        dict(label="Show legend",
                             method="relayout",
                             visible=True,
                             args=["showlegend", True]
                             ),
-                        dict(label="hide",
+                        dict(label="Hide legend",
                             method="relayout",
                             args=["showlegend", False]
                             )
@@ -440,7 +440,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     bgcolor= '#FFFFFF',
                     bordercolor= '#d0cccc',
                     font_color= '#424242',
-                    borderwidth= 0.5,
+                    borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
                     x=0.,
