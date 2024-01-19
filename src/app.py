@@ -68,11 +68,10 @@ country_dict = {
 # Intro text for the app
 app_intro_text = """
     This website explores consumption-based inflation inequality in the EU to shed light on how different income groups 
-    are affected by inflation. Headline inflation reflects changes in the average household's 
-    consumption basket and thus overlooks differences in individual spending patterns. Depending on the 
-    price changes of different consumption categories, differences in spending patterns can result in 
-    different rates of inflation. The analysis presented here leverages Household Budget Surveys (HBSs), 
-    to estimate consumption baskets and inflation rates for households across income groups and EU country.
+    are affected differently by inflation. Headline inflation reflects changes in the consumption basket of an average household 
+    and thus overlooks variations in individual spending patterns. Depending on how different consumption categories change in price, 
+    different spending patterns can result in different rates of inflation. The analysis presented here leverages Household Budget Surveys (HBSs) 
+    to estimate the different consumption baskets and inflation rates for households across income groups and EU country.
     """
 
 # Layout of the Dash app
