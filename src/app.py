@@ -22,7 +22,7 @@ def path(data_file: str):
 
 dfs = {}
 for i in range(1, 4):  # Loop through figures 1, 2, and 3
-    dfs[f'fig{i}'] = pd.read_excel(path('inflation_inequality.xlsx'), sheet_name=f'fig{i}', engine='openpyxl')
+    dfs[f'fig{i}'] = pd.read_excel(path('inflation_inequality.xlsx'), sheet_name=f'fig{i}')
 
 # Define global variables
 opacity = 0.9
