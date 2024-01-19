@@ -109,7 +109,10 @@ app.layout = html.Div([
         ],
         value='fig1',  # Default selected figure
         multi=False,
-        style={'font-family': font_family} 
+        style={
+            'font-family': font_family,
+            'margin-top': '5px', 
+} 
     ),
     
     # Button to download the data table
@@ -118,8 +121,13 @@ app.layout = html.Div([
         id='btn_download',
         style={
             'font-family': font_family,
-            'margin-top': '10px',  
-            'font-size': '14px',
+            'margin-top': '5px',  
+            'font-size': '15px',
+            'padding': '7px',
+            'color': '#424242',
+            'backgroundColor': '#FFFFFF',
+            'borderRadius': '5px',  # Adjust the radius as needed
+            'border': '1px solid #d0cccc',  # Use the desired grey color
         }),
     dcc.Download(id='download'),
 
@@ -130,9 +138,10 @@ app.layout = html.Div([
         label='Display Data Table',
         style={
             'font-family': font_family,
-            'margin-top': '10px', 
+            'margin-top': '5px', 
             'margin-bottom': '10px',
-            'font-size': '26px'  
+            'font-size': '15px',
+            'color': '#424242'
         }
     ),
 
@@ -284,6 +293,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             dragmode= 'pan',
             title_text=f'Figure 1: Inflation rate for top and bottom quantile - {country_dict[selected_country]}',
             font_family=font_family,
+            font_color= '#000000',
             legend_title_text='',
             updatemenus=[
                 dict(
@@ -303,7 +313,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#dfe0e0',
+                    bordercolor= '#d0cccc',
+                    font_color= '#424242',
                     borderwidth= 0.5,
                     xanchor= 'left',
                     yanchor= 'top',
@@ -343,6 +354,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             dragmode= 'pan',
             title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}',
             font_family=font_family,
+            font_color= '#000000',
             legend_title_text='',
             updatemenus=[
                 dict(
@@ -362,7 +374,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#dfe0e0',
+                    bordercolor= '#d0cccc',
+                    font_color= '#424242',
                     borderwidth= 0.5,
                     xanchor= 'left',
                     yanchor= 'top',
@@ -405,6 +418,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             dragmode= 'pan',
             title_text=f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}',
             font_family=font_family,
+            font_color= '#000000',
             legend_title_text='',
             updatemenus=[
                 dict(
@@ -424,7 +438,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#dfe0e0',
+                    bordercolor= '#d0cccc',
+                    font_color= '#424242',
                     borderwidth= 0.5,
                     xanchor= 'left',
                     yanchor= 'top',
