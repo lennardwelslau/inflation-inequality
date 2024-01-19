@@ -1,28 +1,28 @@
 import pathlib
 import pandas as pd
-from dash import Dash, html, dcc, dash_table, Input, Output
+from dash import Dash, html, dcc, dash_table, Input, Output, callback
 from dash.dash_table.Format import Format
 import dash_daq as daq
 import plotly.express as px
 import plotly.graph_objects as go
 
-app = Dash(__name__, title="InflationInequalityApp")
+app = Dash(__name__, title='Inflation Inequality')
 
 # Declare server for deployment. Needed for Procfile.
 server = app.server
 
 # Load data
-def load_data(data_file: str) -> pd.DataFrame:
-    '''
-    Load data from /data directory
-    '''
+def path(data_file: str):
+    """
+    Get file path for data file.
+    """
     PATH = pathlib.Path(__file__).parent
     DATA_PATH = PATH.joinpath("data").resolve()
-    return pd.read_csv(DATA_PATH.joinpath(data_file))
+    return DATA_PATH.joinpath(data_file)
 
 dfs = {}
 for i in range(1, 4):  # Loop through figures 1, 2, and 3
-    dfs[f'fig{i}'] = load_data(f'fig{i}.csv')
+    dfs[f'fig{i}'] = pd.read_excel(path('inflation_inequality.xlsx'), sheet_name=f'fig{i}', engine='openpyxl')
 
 # Define global variables
 opacity = 0.9
@@ -105,13 +105,24 @@ app.layout = html.Div([
         options=[
             {'label': 'Figure 1: Inflation rate for top and bottom', 'value': 'fig1'},
             {'label': 'Figure 2: Expenditure categories', 'value': 'fig2'},
-            {'label': 'FIgure 3: Price growth and difference', 'value': 'fig3'}
+            {'label': 'Figure 3: Price growth and difference', 'value': 'fig3'}
         ],
         value='fig1',  # Default selected figure
         multi=False,
-        style={'font-family': font_family}  # Set font for dropdown options
+        style={'font-family': font_family} 
     ),
     
+    # Button to download the data table
+    html.Button(
+        'Download Dataset', 
+        id='btn_download',
+        style={
+            'font-family': font_family,
+            'margin-top': '10px',  
+            'font-size': '14px',
+        }),
+    dcc.Download(id='download'),
+
     # Boolean switch for displaying the data table
     daq.BooleanSwitch(
         id='display-table-switch',
@@ -119,8 +130,8 @@ app.layout = html.Div([
         label='Display Data Table',
         style={
             'font-family': font_family,
-            'margin-top': '20px',  # Adjust the margin-top property as needed
-            'font-size': '24px'  # Adjust the font-size property as needed
+            'margin-top': '10px', 
+            'font-size': '26px'  
         }
     ),
 
@@ -169,8 +180,20 @@ figure_descriptions = {
     """
 }
 
+# Callback for data download button
+@callback(
+    Output('download', 'data'),
+    Input('btn_download', 'n_clicks'),
+    prevent_initial_call=True,
+)
+
+def func(n_clicks):
+    return dcc.send_file(path('inflation_inequality.xlsx'))
+
+
+
 # Callback to update the selected figure based on dropdown values
-@app.callback(
+@callback(
     Output('selected-figure', 'children'),
     [Input('country-dropdown', 'value'),
      Input('figure-dropdown', 'value'),
