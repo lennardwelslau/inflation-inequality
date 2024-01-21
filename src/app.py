@@ -71,7 +71,7 @@ app_intro_text = """
     are affected differently by inflation. Headline inflation reflects changes in the consumption basket of an average household 
     and thus overlooks variations in individual spending patterns. Depending on how different consumption categories change in price, 
     different spending patterns can result in different rates of inflation. The analysis presented here leverages Household Budget Surveys (HBSs) 
-    to estimate the different consumption baskets and inflation rates for households across income groups and EU country.
+    to estimate the different consumption baskets and inflation rates for households across income groups and EU country between 2019 and 2024.
     """
 
 # Layout of the Dash app
