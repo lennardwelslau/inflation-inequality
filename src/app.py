@@ -156,9 +156,9 @@ figure_descriptions = {
     'fig1': """   
     Source: Bruegel based on Eurostat and national statistical institutes. Note: Figure 1 displays multiple 
     measures of year-on-year (yoy) inflation since January 2019. 
-    The red line represents inflation faced by the top income quantile, the red line by the 
-    bottom quantile and the dashed grey line by the total population. If the blue line is above 
-    the red, low-income households are more affected by rising prices than high-income ones. 
+    The blue line represents inflation faced by the top income quantile, the red line by the 
+    bottom quantile, and the dashed grey line by the total population. If the red line is above 
+    the blue line, low-income households are more affected by rising prices than high-income ones. 
     The light grey dotted line is the HICP inflation, included to see whether the 
     inflation measure for the total population based on the HBS corresponds broadly to the one 
     reported by Eurostat every month. Given that the weights used for the HICP are calculated 
@@ -266,7 +266,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         # Display Figure 1
         fig = px.line(
-            selected_data[['Date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='Date'),
+            selected_data[['Date', f'Top {quantile}', f'Bottom {quantile}']].melt(id_vars='Date'),
             x='Date',
             y='value',
             color='variable',
