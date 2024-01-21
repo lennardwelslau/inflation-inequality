@@ -259,7 +259,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         )
 
         fig.update_traces(
-            hovertemplate='<b>%{customdata[1]}</b><br>%{customdata[0]}: %{customdata[2]:.2f}<extra></extra>',
+            hovertemplate='<b>%{customdata[1]}</b><br>Date: %{customdata[0]}<br>Inflation rate: %{customdata[2]:.2f}<extra></extra>',
             line=dict(width=2.5),
             opacity=opacity
         )
@@ -276,7 +276,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 opacity=opacity,
                 name="Total",
                 customdata=selected_data[['Date', 'Total']].melt(id_vars='Date'),
-                hovertemplate='<b>Total</b><br>%{x}: %{y:.2f}<extra></extra>'
+                hovertemplate='<b>Total</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
             ))
 
         fig.add_trace(
@@ -291,7 +291,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 opacity=opacity,
                 name="HICP",
                 customdata=selected_data[['Date', 'HICP']].melt(id_vars='Date'),
-                hovertemplate='<b>HICP</b><br>%{x}: %{y:.2f}<extra></extra>'
+                hovertemplate='<b>HICP</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
             ))
 
         fig.update_xaxes(title_text='')  # Set x-axis title to an empty string
@@ -342,6 +342,10 @@ def update_selected_data(selected_country, selected_figure, display_table):
             opacity=opacity,
             custom_data= selected_data
         )
+
+        fig.update_traces(
+                    hovertemplate='<b>%{customdata[1]}</b><br>Date: %{x}<br>Effect on inflation inequality: %{y:.2f}<extra></extra>',
+        )
         
         if quantile == 'quintile':
             fig.add_trace(
@@ -355,6 +359,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     hovertemplate='<b>Difference between inflation rates of bottom and top quintiles</b><br>%{x}: %{y:.2f}<extra></extra>'
                 )
             )  
+
         elif quantile == 'quartile':
             fig.add_trace(
                 go.Scatter(
