@@ -323,8 +323,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         fig.update_xaxes(
             title_text='',
-            dtick="M12",
-            tickformat="%b %Y",
+            dtick="M4",
+            tickformat='%b\n%Y',
             ticklabelmode="period"
             )
         
@@ -405,12 +405,12 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     opacity=opacity,
                     hovertemplate='<b>Difference between inflation rates of bottom and top quartiles</b><br>%{x}: %{y:.2f}<extra></extra>'
                 )
-            )     
-
+            )   
+             
         fig.update_xaxes(
             title_text='',
-            dtick="M12",
-            tickformat="%b %Y",
+            dtick="M4",
+            tickformat='%b\n%Y',
             ticklabelmode="period"
             )
         
