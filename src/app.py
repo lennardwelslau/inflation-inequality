@@ -74,6 +74,10 @@ app_intro_text = """
     to estimate the different consumption baskets and inflation rates for households across income groups and EU countries between 2019 and 2024.
     """
 
+hover_style = {
+    'background-color': '#e5f2ff',
+    'cursor': 'pointer'
+}
 # Layout of the Dash app
 app.layout = html.Div(
     [
@@ -122,13 +126,13 @@ app.layout = html.Div(
             style={
                 'font-family': font_family,
                 'margin-top': '5px',  
-                'font-size': '15px',
-                'padding': '7px',
-                'color': '#424242',
+                'font-size': '16px',
+                'padding': '8px 10px',
+                'color': '#333333',
                 'backgroundColor': '#FFFFFF',
                 'borderRadius': '5px',  # Adjust the radius as needed
-                'border': '1px solid #d0cccc',  # Use the desired grey color
-            }
+                'border': '1px solid #cccccc',  # Use the desired grey color
+            },
         ),
         dcc.Download(id='download'),
 
@@ -142,7 +146,7 @@ app.layout = html.Div(
                 'margin-top': '5px', 
                 'margin-bottom': '10px',
                 'font-size': '15px',
-                'color': '#424242',
+                'color': '#333333',
             }
         ),
 
@@ -321,7 +325,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_yaxes(title_text='') 
 
         fig.update_layout(
-            dragmode= 'pan',
+            dragmode=False,
             title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}',
             font_family=font_family,
             font_color= '#000000',
@@ -344,8 +348,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#d0cccc',
-                    font_color= '#424242',
+                    bordercolor= '#cccccc',
+                    font_color= '#333333',
                     borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
@@ -401,7 +405,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_yaxes(title_text='') 
 
         fig.update_layout(
-            dragmode= 'pan',
+            dragmode=False,
             title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}',
             font_family=font_family,
             font_color= '#000000',
@@ -424,8 +428,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#d0cccc',
-                    font_color= '#424242',
+                    bordercolor= '#cccccc',
+                    font_color= '#333333',
                     borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
@@ -466,7 +470,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         )
 
         fig.update_layout(
-            dragmode= 'pan',
+            dragmode=False,
             title_text=f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}',
             font_family=font_family,
             font_color= '#000000',
@@ -489,8 +493,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     active=0,
                     showactive=True,
                     bgcolor= '#FFFFFF',
-                    bordercolor= '#d0cccc',
-                    font_color= '#424242',
+                    bordercolor= '#cccccc',
+                    font_color= '#333333',
                     borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
