@@ -200,7 +200,6 @@ def func(n_clicks):
     return dcc.send_file(path('inflation_inequality.xlsx'))
 
 
-
 # Callback to update the selected figure based on dropdown values
 @callback(
     Output('selected-figure', 'children'),
@@ -234,6 +233,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             ],
             # selected_data without Country column
             data=selected_data.to_dict('records'),
+            fixed_rows={'headers': True},
             style_table={'font-family': font_family},  # Set font for the table
             style_cell={'font-family': font_family}  # Set font for cells
         ) 
