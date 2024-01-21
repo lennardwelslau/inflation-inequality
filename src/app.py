@@ -321,9 +321,9 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     bordercolor= '#d0cccc',
                     font_color= '#424242',
                     borderwidth= 1,
-                    xanchor= 'center',
+                    xanchor= 'left',
                     yanchor= 'top',
-                    x=0.5,
+                    x=0,
                     y=-0.25
                     )
                 ]
@@ -382,9 +382,9 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     bordercolor= '#d0cccc',
                     font_color= '#424242',
                     borderwidth= 1,
-                    xanchor= 'center',
+                    xanchor= 'left',
                     yanchor= 'top',
-                    x=0.5,
+                    x=0,
                     y=-0.25
                     )
                 ]
@@ -446,9 +446,9 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     bordercolor= '#d0cccc',
                     font_color= '#424242',
                     borderwidth= 1,
-                    xanchor= 'center',
+                    xanchor= 'left',
                     yanchor= 'top',
-                    x=0.5,
+                    x=0,
                     y=-0.25
                     )
                 ]
