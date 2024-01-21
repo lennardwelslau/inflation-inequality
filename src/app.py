@@ -237,6 +237,22 @@ def update_selected_data(selected_country, selected_figure, display_table):
             # selected_data without Country column
             data=selected_data.to_dict('records'),
             fixed_rows={'headers': True},
+            style_header={
+                'whiteSpace': 'normal',
+                'height': 'auto',
+                'minWidth': '180px', 
+                'width': '180px', 
+                'maxWidth': '180px',
+                'textAlign': 'center'
+            },
+            style_data={
+                'whiteSpace': 'normal',
+                'height': 'auto',
+                'minWidth': '180px', 
+                'width': '180px', 
+                'maxWidth': '180px',
+                'textAlign': 'left'
+            },
             style_table={'font-family': font_family},  # Set font for the table
             style_cell={'font-family': font_family}  # Set font for cells
         ) 
