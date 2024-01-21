@@ -136,7 +136,7 @@ app.layout = html.Div(
         daq.BooleanSwitch(
             id='table-switch',
             on=False,
-            label='Show data table',
+            label='Show figure data',
             style={
                 'font-family': font_family,
                 'margin-top': '5px', 
