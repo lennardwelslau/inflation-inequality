@@ -75,78 +75,81 @@ app_intro_text = """
     """
 
 # Layout of the Dash app
-app.layout = html.Div([
-    html.H1(
-        "Inflation Inequality in the EU", 
-        style={
-            'text-align': 'center', 
-            'font-family': font_family
+app.layout = html.Div(
+    [
+        html.H1(
+            "Inflation Inequality in the EU", 
+            style={
+                'text-align': 'center', 
+                'font-family': font_family
+                }
+            ),  # Title
+
+        html.P(
+            app_intro_text,
+            style={'font-family': 'Arial, sans-serif', 'margin-bottom': '15px'}
+        ), # Intro text
+
+        # Dropdown for country selection
+        dcc.Dropdown(
+            id='country-dropdown',
+            options=[{'label': country_dict[country], 'value': country} for country in country_dict.keys()],
+            value='AT', # Default selected country
+            multi=False,
+            style={'font-family': font_family}  # Set font for dropdown options
+        ),
+
+        # Dropdown for figure selection
+        dcc.Dropdown(
+            id='figure-dropdown',
+            options=[
+                {'label': 'Figure 1: Inflation rate for top and bottom quantile', 'value': 'fig1'},
+                {'label': 'Figure 2: Expenditure categories driving inflation inequality', 'value': 'fig2'},
+                {'label': 'Figure 3: Price growth and difference in importance of consumption categories', 'value': 'fig3'}
+            ],
+            value='fig1',  # Default selected figure
+            multi=False,
+            style={
+                'font-family': font_family,
+                'margin-top': '5px', 
+            } 
+        ),
+        
+        # Button to download the data table
+        html.Button(
+            'Download dataset', 
+            id='btn_download',
+            style={
+                'font-family': font_family,
+                'margin-top': '5px',  
+                'font-size': '15px',
+                'padding': '7px',
+                'color': '#424242',
+                'backgroundColor': '#FFFFFF',
+                'borderRadius': '5px',  # Adjust the radius as needed
+                'border': '1px solid #d0cccc',  # Use the desired grey color
             }
-        ),  # Title
+        ),
+        dcc.Download(id='download'),
 
-    html.P(
-        app_intro_text,
-        style={'font-family': 'Arial, sans-serif', 'margin-bottom': '15px'}
-    ), # Intro text
+        # Boolean switch for displaying the data table
+        daq.BooleanSwitch(
+            id='table-switch',
+            on=False,
+            label='Show data table',
+            style={
+                'font-family': font_family,
+                'margin-top': '5px', 
+                'margin-bottom': '10px',
+                'font-size': '15px',
+                'color': '#424242'
+            }
+        ),
 
-    # Dropdown for country selection
-    dcc.Dropdown(
-        id='country-dropdown',
-        options=[{'label': country_dict[country], 'value': country} for country in dfs['fig1']['Country'].unique()],
-        value=dfs['fig1']['Country'].unique()[0],  # Default selected country
-        multi=False,
-        style={'font-family': font_family}  # Set font for dropdown options
-    ),
-
-    # Dropdown for figure selection
-    dcc.Dropdown(
-        id='figure-dropdown',
-        options=[
-            {'label': 'Figure 1: Inflation rate for top and bottom', 'value': 'fig1'},
-            {'label': 'Figure 2: Expenditure categories', 'value': 'fig2'},
-            {'label': 'Figure 3: Price growth and difference', 'value': 'fig3'}
-        ],
-        value='fig1',  # Default selected figure
-        multi=False,
-        style={
-            'font-family': font_family,
-            'margin-top': '5px', 
-} 
-    ),
-    
-    # Button to download the data table
-    html.Button(
-        'Download dataset', 
-        id='btn_download',
-        style={
-            'font-family': font_family,
-            'margin-top': '5px',  
-            'font-size': '15px',
-            'padding': '7px',
-            'color': '#424242',
-            'backgroundColor': '#FFFFFF',
-            'borderRadius': '5px',  # Adjust the radius as needed
-            'border': '1px solid #d0cccc',  # Use the desired grey color
-        }),
-    dcc.Download(id='download'),
-
-    # Boolean switch for displaying the data table
-    daq.BooleanSwitch(
-        id='table-switch',
-        on=False,
-        label='Show data table',
-        style={
-            'font-family': font_family,
-            'margin-top': '5px', 
-            'margin-bottom': '10px',
-            'font-size': '15px',
-            'color': '#424242'
-        }
-    ),
-
-    # Div to hold the selected figure
-    html.Div(id='selected-figure')
-])
+        # Div to hold the selected figure
+        html.Div(id='selected-figure')
+    ]
+)
 
 # Text descriptions for each figure
 figure_descriptions = {
@@ -219,7 +222,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             selected_data = selected_data.drop(columns=[f'Average inflation in {year}'])
     
     # Define country-dependent variables
-    if selected_country == 'Belgium':
+    if selected_country == 'BE':
         quantile = 'quartile'
     else:
         quantile = 'quintile'
@@ -296,7 +299,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         fig.update_layout(
             dragmode= 'pan',
-            title_text=f'Figure 1: Inflation rate for top and bottom quantile - {country_dict[selected_country]}',
+            title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}',
             font_family=font_family,
             font_color= '#000000',
             legend_title_text='',
@@ -335,22 +338,35 @@ def update_selected_data(selected_country, selected_figure, display_table):
             selected_data,
             x='Date',
             y='Effect on inflation inequality',
-            color='COICOP',
+            color='Consumption category',
             opacity=opacity,
             custom_data= selected_data
         )
         
-        fig.add_trace(
-            go.Scatter(
-                x= selected_data['Date'],
-                y= selected_data['Difference between inflation rates of bottom and top quantiles'],
-                line=dict(color='#000000'),
-                name=f'Difference between inflation rates<br>of bottom and top {quantile}s',
-                customdata= selected_data,
-                opacity=opacity,
-                hovertemplate='<b>Difference between inflation rates of bottom and top quantiles</b><br>%{x}: %{y:.2f}<extra></extra>'
-            )
-        )      
+        if quantile == 'quintile':
+            fig.add_trace(
+                go.Scatter(
+                    x= selected_data['Date'],
+                    y= selected_data['Difference between inflation rates of bottom and top quantiles'],
+                    line=dict(color='#000000'),
+                    name=f'Difference between inflation rates<br>of bottom and top {quantile}s',
+                    customdata= selected_data,
+                    opacity=opacity,
+                    hovertemplate='<b>Difference between inflation rates of bottom and top quintiles</b><br>%{x}: %{y:.2f}<extra></extra>'
+                )
+            )  
+        elif quantile == 'quartile':
+            fig.add_trace(
+                go.Scatter(
+                    x= selected_data['Date'],
+                    y= selected_data['Difference between inflation rates of bottom and top quantiles'],
+                    line=dict(color='#000000'),
+                    name=f'Difference between inflation rates<br>of bottom and top {quantile}s',
+                    customdata= selected_data,
+                    opacity=opacity,
+                    hovertemplate='<b>Difference between inflation rates of bottom and top quartiles</b><br>%{x}: %{y:.2f}<extra></extra>'
+                )
+            )     
 
         fig.update_xaxes(title_text='')  # Set x-axis title to an empty string
         fig.update_yaxes(title_text='') 
@@ -403,7 +419,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         
         fig.update_traces(marker=dict(size=7),
                     selector=dict(mode='markers'),
-                    hovertemplate='<b>%{customdata[3]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
+                    hovertemplate='<b>%{customdata[2]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
                     line=dict(width=2.5),
                     opacity=opacity)
 
