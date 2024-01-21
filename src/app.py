@@ -282,7 +282,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         )
 
         fig.update_traces(
-            hovertemplate='<b>%{customdata[1]}</b><br>Date: %{customdata[0]}<br>Inflation rate: %{customdata[2]:.2f}<extra></extra>',
+            hovertemplate='<b>%{customdata[1]}</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
             line=dict(width=2.5),
             opacity=opacity
         )
