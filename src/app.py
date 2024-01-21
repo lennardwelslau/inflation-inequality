@@ -272,6 +272,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             selected_data[['Date', f'Top {quantile}', f'Bottom {quantile}']].melt(id_vars='Date'),
             x='Date',
             y='value',
+            template='plotly_white',
             color='variable',
             markers=False,
             custom_data=selected_data[['Date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='Date')
@@ -357,6 +358,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             selected_data,
             x='Date',
             y='Effect on inflation inequality',
+            template='plotly_white',
             color='Consumption category',
             opacity=opacity,
             custom_data= selected_data
@@ -437,6 +439,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             selected_data, 
             x='Difference in share of total expenditure', 
             y='Average inflation in 2023', 
+            template='plotly_white',
             color='Main category',
             opacity=opacity,
             custom_data=selected_data)
