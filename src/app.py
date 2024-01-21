@@ -323,7 +323,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         fig.update_xaxes(
             title_text='',
-            dtick="M4",
+            dtick="M3",
             tickformat='%b\n%Y',
             ticklabelmode="period"
             )
@@ -409,7 +409,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
              
         fig.update_xaxes(
             title_text='',
-            dtick="M4",
+            dtick="M3",
             tickformat='%b\n%Y',
             ticklabelmode="period"
             )
