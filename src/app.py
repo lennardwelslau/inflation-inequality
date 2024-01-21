@@ -321,7 +321,13 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 hovertemplate='<b>HICP</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
             ))
 
-        fig.update_xaxes(title_text='')  # Set x-axis title to an empty string
+        fig.update_xaxes(
+            title_text='',
+            dtick="M12",
+            tickformat="%b %Y",
+            ticklabelmode="period"
+            )
+        
         fig.update_yaxes(title_text='') 
 
         fig.update_layout(
@@ -401,8 +407,16 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 )
             )     
 
-        fig.update_xaxes(title_text='')  # Set x-axis title to an empty string
-        fig.update_yaxes(title_text='') 
+        fig.update_xaxes(
+            title_text='',
+            dtick="M12",
+            tickformat="%b %Y",
+            ticklabelmode="period"
+            )
+        
+        fig.update_yaxes(
+            title_text=''
+            ) 
 
         fig.update_layout(
             dragmode=False,
@@ -460,7 +474,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_xaxes(
             zeroline=True, 
             zerolinewidth=1,
-            zerolinecolor='grey',
+            zerolinecolor='grey'
         )
 
         fig.update_yaxes(
