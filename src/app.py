@@ -212,8 +212,13 @@ def func(n_clicks):
 def update_selected_data(selected_country, selected_figure, display_table):
 
     # Select df based on selected figure and country
-    selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].dropna(axis=1)
-
+    selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].drop(columns='Country').dropna(axis=1)
+    
+    # If selected figure is Figure 3, drop show only Average inflation in 2023 in Data Table
+    if selected_figure == 'fig3':
+        for year in [2019, 2020, 2021, 2022]:
+            selected_data = selected_data.drop(columns=[f'Average inflation in {year}'])
+    
     # Define country-dependent variables
     if selected_country == 'Belgium':
         quantile = 'quartile'
@@ -227,6 +232,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             columns=[
                 {'name': col, 'id': col, 'type': 'numeric', 'format': Format(precision=3)} for col in selected_data.columns
             ],
+            # selected_data without Country column
             data=selected_data.to_dict('records'),
             style_table={'font-family': font_family},  # Set font for the table
             style_cell={'font-family': font_family}  # Set font for cells
@@ -241,12 +247,12 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         # Display Figure 1
         fig = px.line(
-            selected_data[['date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='date'),
-            x='date',
+            selected_data[['Date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='Date'),
+            x='Date',
             y='value',
             color='variable',
             markers=False,
-            custom_data=selected_data[['date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='date')
+            custom_data=selected_data[['Date', f'Bottom {quantile}', f'Top {quantile}']].melt(id_vars='Date')
         )
 
         fig.update_traces(
@@ -257,8 +263,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
 
         fig.add_trace(
             go.Scatter(
-                x=selected_data[['date', 'Total']].melt(id_vars='date')['date'],
-                y=selected_data[['date', 'Total']].melt(id_vars='date')['value'],
+                x=selected_data[['Date', 'Total']].melt(id_vars='Date')['Date'],
+                y=selected_data[['Date', 'Total']].melt(id_vars='Date')['value'],
                 line=dict(
                     color='#696969',
                     width=2,
@@ -266,14 +272,14 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 ),
                 opacity=opacity,
                 name="Total",
-                customdata=selected_data[['date', 'Total']].melt(id_vars='date'),
+                customdata=selected_data[['Date', 'Total']].melt(id_vars='Date'),
                 hovertemplate='<b>Total</b><br>%{x}: %{y:.2f}<extra></extra>'
             ))
 
         fig.add_trace(
             go.Scatter(
-                x=selected_data[['date', 'HICP']].melt(id_vars='date')['date'],
-                y=selected_data[['date', 'HICP']].melt(id_vars='date')['value'],
+                x=selected_data[['Date', 'HICP']].melt(id_vars='Date')['Date'],
+                y=selected_data[['Date', 'HICP']].melt(id_vars='Date')['value'],
                 line=dict(
                     color='#A9A9A9',
                     width=2,
@@ -281,7 +287,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 ),
                 opacity=opacity,
                 name="HICP",
-                customdata=selected_data[['date', 'HICP']].melt(id_vars='date'),
+                customdata=selected_data[['Date', 'HICP']].melt(id_vars='Date'),
                 hovertemplate='<b>HICP</b><br>%{x}: %{y:.2f}<extra></extra>'
             ))
 
@@ -327,22 +333,22 @@ def update_selected_data(selected_country, selected_figure, display_table):
         # Display Figure 2
         fig = px.bar(
             selected_data,
-            x='date',
-            y='value',
-            color='coicop',
+            x='Date',
+            y='Effect on inflation inequality',
+            color='COICOP',
             opacity=opacity,
             custom_data= selected_data
         )
         
         fig.add_trace(
             go.Scatter(
-                x= selected_data['date'],
-                y= selected_data['diff'],
+                x= selected_data['Date'],
+                y= selected_data['Difference between inflation rates of bottom and top quantiles'],
                 line=dict(color='#000000'),
-                name=f"Difference between inflation rates<br>of bottom and top {quantile}s",
+                name=f'Difference between inflation rates<br>of bottom and top {quantile}s',
                 customdata= selected_data,
                 opacity=opacity,
-                hovertemplate='<b>Difference between inflation rates of bottom and top quintiles</b><br>%{x}: %{y:.2f}<extra></extra>'
+                hovertemplate='<b>Difference between inflation rates of bottom and top quantiles</b><br>%{x}: %{y:.2f}<extra></extra>'
             )
         )      
 
@@ -378,7 +384,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
                     borderwidth= 1,
                     xanchor= 'left',
                     yanchor= 'top',
-                    x=0.,
+                    x=0.5,
                     y=-0.25
                     )
                 ]
