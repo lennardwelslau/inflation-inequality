@@ -256,7 +256,10 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 'maxWidth': '90px',
                 'textAlign': 'left'
             },
-            style_table={'font-family': font_family},  # Set font for the table
+            style_table={
+                'font-family': font_family, 
+                'height': '400px', 
+                'overflowY': 'auto'},
             style_cell={'font-family': font_family}  # Set font for cells
         ) 
     else:
