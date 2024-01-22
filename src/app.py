@@ -77,10 +77,6 @@ app_intro_text = """
     to estimate the different consumption baskets and inflation rates for households across income groups and EU countries between 2019 and 2024.
     """
 
-hover_style = {
-    'background-color': '#e5f2ff',
-    'cursor': 'pointer'
-}
 # Layout of the Dash app
 app.layout = html.Div([
         # Title
@@ -127,15 +123,10 @@ app.layout = html.Div([
         html.Button(
             'Download dataset', 
             id='btn_download',
+            className='button',
             style={
                 'font-family': font_family,
-                'margin-top': '5px',  
-                'font-size': '16px',
-                'padding': '8px 10px',
-                'color': '#333333',
-                'backgroundColor': '#FFFFFF',
-                'borderRadius': '5px',  # Adjust the radius as needed
-                'border': '1px solid #cccccc',  # Use the desired grey color
+                'margin-top': '5px'
             },
         ),
         dcc.Download(id='download'),
@@ -189,7 +180,7 @@ figure_descriptions = {
     low- and high-income households. 
 
     Figure 3 distinguishes between the two drivers of inflation inequality: the change in price of categories of goods 
-    (average rate of inflation for 2022, y-axis) the difference between the share that each category makes up of the 
+    (average rate of inflation for 2023, y-axis) the difference between the share that each category makes up of the 
     consumption bundle of low- and high-income households (top minus bottom quantile share, x-axis). 
     If all households place the same weight in their overall consumption on a certain good, then even very large 
     increases in its price will not affect inflation inequality. Conversely, even a small increase in prices can 
@@ -462,18 +453,10 @@ def update_selected_data(selected_country, selected_figure, display_table):
         ]
     )
 
-    # # restyle based if mobile view
-    # if is_mobile:
-    #     fig.update_layout(
-    #     showlegend=False,
-    #     updatemenus=[
-    #         dict(active=1)
-    #     ]
-    # )
     return [
             table,
             dcc.Graph(
-                id='line-plot',
+                id='figure',
                 figure=fig
             ),
             html.Div([

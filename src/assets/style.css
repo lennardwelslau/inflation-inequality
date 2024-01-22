@@ -1,21 +1,35 @@
 .dash-graph {
-  zoom: 0.6;
+    zoom: 0.6;
 }
 
 @media (min-width: 475px) {
-  .dash-graph {
-    zoom: 0.7;
-  }
+    .dash-graph {
+        zoom: 0.7;
+    }
 }
 
 @media (min-width: 768px) {
-  .dash-graph {
-    zoom: 0.9;
-  }
+    .dash-graph {
+        zoom: 0.9;
+    }
 }
 
 @media (min-width: 1024px) {
-  .dash-graph {
-    zoom: 1;
-  }
+    .dash-graph {
+        zoom: 1;
+    }
+}
+
+.button {
+    font-size: 16px;
+    padding: 8px 10px;
+    color: #333333;
+    background-color: #FFFFFF;
+    border-radius: 5px; 
+    border: 1px solid #cccccc; 
+}
+
+.button:hover {
+    background-color: #e5f2ff !important;
+    cursor: pointer;
 }
