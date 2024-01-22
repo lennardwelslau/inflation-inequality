@@ -1,6 +1,6 @@
 import pathlib
 import pandas as pd
-from dash import Dash, html, dcc, dash_table, Input, Output, callback
+from dash import Dash, html, dcc, dash_table, Input, Output, callback, State, clientside_callback
 from dash.dash_table.Format import Format
 import dash_daq as daq
 import plotly.express as px
@@ -146,7 +146,10 @@ app.layout = html.Div([
         ),
 
         # Div to hold the selected figure
-        html.Div(id='selected-figure')
+        html.Div(id='selected-figure'),
+
+        # Store for detecting mobile devices
+        dcc.Store(id='is-mobile-store', data=False),
     ])
 
 # Text descriptions for each figure
@@ -190,6 +193,7 @@ figure_descriptions = {
     """
 }
 
+
 # Callback for data download button
 @callback(
     Output('download', 'data'),
@@ -200,14 +204,28 @@ def func(n_clicks):
     return dcc.send_file(path('inflation_inequality.xlsx'))
 
 
+# Clientside callback for detecting mobile devices
+clientside_callback(
+    """
+    function updateIsMobile() {
+        var isMobile = window.innerWidth < 700;
+        return isMobile;
+    }
+    """,
+    Output('is-mobile-store', 'data'),
+    [Input('is-mobile-store', 'data')],
+    prevent_initial_call=False
+)
+
 # Callback to update the selected figure based on dropdown values
 @callback(
     Output('selected-figure', 'children'),
     [Input('country-dropdown', 'value'),
      Input('figure-dropdown', 'value'),
-     Input('table-switch', 'on')]  
+     Input('table-switch', 'on'),
+     Input('is-mobile-store', 'data')]
 )
-def update_selected_data(selected_country, selected_figure, display_table):
+def update_selected_data(selected_country, selected_figure, display_table, is_mobile):
 
     # Select df based on selected figure and country
     selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].drop(columns='Country').dropna(axis=1)
@@ -316,7 +334,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_xaxes(
             title_text='',
             dtick="M3",
-            tickformat='%b-%y'
+            tickformat='%b\n%Y'
             )
         
         fig.update_yaxes(title_text='') 
@@ -370,7 +388,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_xaxes(
             title_text='',
             dtick="M3",
-            tickformat='%b-%y'
+            tickformat='%b\n%Y'
             )
         
         fig.update_yaxes(
@@ -452,6 +470,19 @@ def update_selected_data(selected_country, selected_figure, display_table):
             )
         ]
     )
+
+    # Set layout options for mobile devices
+    if is_mobile:
+        fig.update_layout(
+            showlegend=False,
+            updatemenus=[dict(active=1)]
+        )
+
+    if is_mobile and selected_figure != 'fig3':
+        fig.update_xaxes(
+            dtick="M6",
+            tickformat='%b-%y'
+            )
 
     return [
             table,
