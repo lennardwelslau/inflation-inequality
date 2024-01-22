@@ -6,7 +6,10 @@ import dash_daq as daq
 import plotly.express as px
 import plotly.graph_objects as go
 
-app = Dash(__name__, title='Inflation Inequality')
+app = Dash(
+    __name__, 
+    title='Inflation Inequality'
+    )
 
 # Declare server for deployment. Needed for Procfile.
 server = app.server
@@ -79,8 +82,8 @@ hover_style = {
     'cursor': 'pointer'
 }
 # Layout of the Dash app
-app.layout = html.Div(
-    [
+app.layout = html.Div([
+        # Title
         html.H1(
             "Inflation Inequality in the EU", 
             style={
@@ -89,10 +92,11 @@ app.layout = html.Div(
                 }
             ),  # Title
 
+        # Intro text
         html.P(
             app_intro_text,
             style={'font-family': 'Arial, sans-serif', 'margin-bottom': '15px'}
-        ), # Intro text
+        ), 
 
         # Dropdown for country selection
         dcc.Dropdown(
@@ -152,8 +156,7 @@ app.layout = html.Div(
 
         # Div to hold the selected figure
         html.Div(id='selected-figure')
-    ]
-)
+    ])
 
 # Text descriptions for each figure
 figure_descriptions = {
@@ -202,7 +205,6 @@ figure_descriptions = {
     Input('btn_download', 'n_clicks'),
     prevent_initial_call=True,
 )
-
 def func(n_clicks):
     return dcc.send_file(path('inflation_inequality.xlsx'))
 
@@ -214,7 +216,6 @@ def func(n_clicks):
      Input('figure-dropdown', 'value'),
      Input('table-switch', 'on')]  
 )
-
 def update_selected_data(selected_country, selected_figure, display_table):
 
     # Select df based on selected figure and country
@@ -230,7 +231,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         quantile = 'quartile'
     else:
         quantile = 'quintile'
-
+    
     # Create table with selected data if switch is on
     if display_table:
         table = dash_table.DataTable(
@@ -269,8 +270,6 @@ def update_selected_data(selected_country, selected_figure, display_table):
     else:
         table = None  # Display table only if switch is on
 
-
-
     # Retrieve the selected country's data for the chosen figure
     if selected_figure == 'fig1':
 
@@ -304,7 +303,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 name="Total",
                 customdata=selected_data[['Date', 'Total']].melt(id_vars='Date'),
                 hovertemplate='<b>Total</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
-            ))
+            )
+        )
 
         fig.add_trace(
             go.Scatter(
@@ -319,7 +319,8 @@ def update_selected_data(selected_country, selected_figure, display_table):
                 name="HICP",
                 customdata=selected_data[['Date', 'HICP']].melt(id_vars='Date'),
                 hovertemplate='<b>HICP</b><br>Date: %{x}<br>Inflation rate: %{y:.2f}<extra></extra>',
-            ))
+            )
+        )
 
         fig.update_xaxes(
             title_text='',
@@ -330,38 +331,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         fig.update_yaxes(title_text='') 
 
         fig.update_layout(
-            dragmode=False,
             title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}',
-            font_family=font_family,
-            font_color= '#000000',
-            legend_title_text='',
-            updatemenus=[
-                dict(
-                    type="buttons",
-                    buttons=[
-                        dict(label="Show legend",
-                            method="relayout",
-                            visible=True,
-                            args=["showlegend", True]
-                            ),
-                        dict(label="Hide legend",
-                            method="relayout",
-                            args=["showlegend", False]
-                            )
-                    ],
-                    direction='right',
-                    active=0,
-                    showactive=True,
-                    bgcolor= '#FFFFFF',
-                    bordercolor= '#cccccc',
-                    font_color= '#333333',
-                    borderwidth= 1,
-                    xanchor= 'left',
-                    yanchor= 'top',
-                    x=0,
-                    y=-0.25
-                    )
-                ]
         )
 
     elif selected_figure == 'fig2':
@@ -377,7 +347,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
         )
 
         fig.update_traces(
-                    hovertemplate='<b>%{customdata[1]}</b><br>Date: %{x}<br>Effect on inflation inequality: %{y:.2f}<extra></extra>',
+            hovertemplate='<b>%{customdata[1]}</b><br>Date: %{x}<br>Effect on inflation inequality: %{y:.2f}<extra></extra>',
         )
         
         if quantile == 'quintile':
@@ -417,38 +387,7 @@ def update_selected_data(selected_country, selected_figure, display_table):
             ) 
 
         fig.update_layout(
-            dragmode=False,
             title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}',
-            font_family=font_family,
-            font_color= '#000000',
-            legend_title_text='',
-            updatemenus=[
-                dict(
-                    type="buttons",
-                    buttons=[
-                        dict(label="Show legend",
-                            method="relayout",
-                            visible=True,
-                            args=["showlegend", True]
-                            ),
-                        dict(label="Hide legend",
-                            method="relayout",
-                            args=["showlegend", False]
-                            )
-                    ],
-                    direction='right',
-                    active=0,
-                    showactive=True,
-                    bgcolor= '#FFFFFF',
-                    bordercolor= '#cccccc',
-                    font_color= '#333333',
-                    borderwidth= 1,
-                    xanchor= 'left',
-                    yanchor= 'top',
-                    x=0,
-                    y=-0.25
-                    )
-                ]
         )
 
     elif selected_figure == 'fig3':
@@ -461,13 +400,16 @@ def update_selected_data(selected_country, selected_figure, display_table):
             template='plotly_white',
             color='Main category',
             opacity=opacity,
-            custom_data=selected_data)
+            custom_data=selected_data
+        )
         
-        fig.update_traces(marker=dict(size=7),
-                    selector=dict(mode='markers'),
-                    hovertemplate='<b>%{customdata[2]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
-                    line=dict(width=2.5),
-                    opacity=opacity)
+        fig.update_traces(
+            marker=dict(size=7),
+            selector=dict(mode='markers'),
+            hovertemplate='<b>%{customdata[2]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
+            line=dict(width=2.5),
+            opacity=opacity
+        )
 
         fig.update_xaxes(
             zeroline=True, 
@@ -482,40 +424,52 @@ def update_selected_data(selected_country, selected_figure, display_table):
         )
 
         fig.update_layout(
-            dragmode=False,
             title_text=f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}',
-            font_family=font_family,
-            font_color= '#000000',
-            legend_title_text='',
-            updatemenus=[
-                dict(
-                    type="buttons",
-                    buttons=[
-                        dict(label="Show legend",
-                            method="relayout",
-                            visible=True,
-                            args=["showlegend", True]
-                            ),
-                        dict(label="Hide legend",
-                            method="relayout",
-                            args=["showlegend", False]
-                            )
-                    ],
-                    direction='right',
-                    active=0,
-                    showactive=True,
-                    bgcolor= '#FFFFFF',
-                    bordercolor= '#cccccc',
-                    font_color= '#333333',
-                    borderwidth= 1,
-                    xanchor= 'left',
-                    yanchor= 'top',
-                    x=0,
-                    y=-0.25
-                    )
-                ]
         )
+    
+    # Set common layout options across figures
+    fig.update_layout(
+        dragmode=False,
+        font_family=font_family,
+        font_color= '#000000',
+        legend_title_text='',
+        updatemenus=[
+            dict(
+                type="buttons",
+                buttons=[
+                    dict(label="Show legend",
+                        method="relayout",
+                        visible=True,
+                        args=["showlegend", True]
+                        ),
+                    dict(label="Hide legend",
+                        method="relayout",
+                        args=["showlegend", False]
+                        )
+                ],
+                direction='right',
+                active=0,
+                showactive=True,
+                bgcolor= '#FFFFFF',
+                bordercolor= '#cccccc',
+                font_color= '#333333',
+                borderwidth= 1,
+                xanchor= 'left',
+                yanchor= 'top',
+                x=0,
+                y=-0.25
+            )
+        ]
+    )
 
+    # # restyle based if mobile view
+    # if is_mobile:
+    #     fig.update_layout(
+    #     showlegend=False,
+    #     updatemenus=[
+    #         dict(active=1)
+    #     ]
+    # )
     return [
             table,
             dcc.Graph(
