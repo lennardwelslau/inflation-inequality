@@ -29,10 +29,6 @@ for i in range(1, 4):  # Loop through figures 1, 2, and 3
 
 # Define global variables
 opacity = 0.9
-figmargin = {
-    'l':5, 
-    'r':5
-    }
 titlesize = 14
 captionsize = 12
 legendsize = 12
@@ -76,6 +72,40 @@ app_intro_text = """
     different spending patterns can result in different rates of inflation. The analysis presented here leverages Household Budget Surveys (HBSs) 
     to estimate the different consumption baskets and inflation rates for households across income groups and EU countries between 2019 and 2024.
     """
+
+# Boolean switches for displaying the data table and figure legend
+boolean_switches_div = html.Div([
+    # Boolean switch for displaying the data table
+    daq.BooleanSwitch(
+        id='table-switch',
+        on=False,
+        label='Show data',
+        style={
+            'font-family': font_family,
+            'margin-top': '5px', 
+            'margin-bottom': '10px',
+            'font-size': '15px',
+            'color': '#333333',
+            'display': 'inline-block',  # Display the switch inline
+            'margin-right': '20px',     # Add margin between switches
+        }
+    ),
+
+    # Boolean switch for displaying the figure legend
+    daq.BooleanSwitch(
+        id='legend-switch',
+        on=True,
+        label='Show legend',
+        style={
+            'font-family': font_family,
+            'margin-top': '5px', 
+            'margin-bottom': '10px',
+            'font-size': '15px',
+            'color': '#333333',
+            'display': 'inline-block',  # Display the switch inline
+        }
+    ),
+])
 
 # Layout of the Dash app
 app.layout = html.Div([
@@ -131,19 +161,8 @@ app.layout = html.Div([
         ),
         dcc.Download(id='download'),
 
-        # Boolean switch for displaying the data table
-        daq.BooleanSwitch(
-            id='table-switch',
-            on=False,
-            label='Show figure data',
-            style={
-                'font-family': font_family,
-                'margin-top': '5px', 
-                'margin-bottom': '10px',
-                'font-size': '15px',
-                'color': '#333333',
-            }
-        ),
+        # Boolean switches container
+        boolean_switches_div,
 
         # Div to hold the selected figure
         html.Div(id='selected-figure'),
@@ -223,9 +242,10 @@ clientside_callback(
     [Input('country-dropdown', 'value'),
      Input('figure-dropdown', 'value'),
      Input('table-switch', 'on'),
+     Input('legend-switch', 'on'),
      Input('is-mobile-store', 'data')]
 )
-def update_selected_data(selected_country, selected_figure, display_table, is_mobile):
+def update_selected_data(selected_country, selected_figure, show_table, show_legend, is_mobile):
 
     # Select df based on selected figure and country
     selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].drop(columns='Country').dropna(axis=1)
@@ -242,12 +262,16 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
         quantile = 'quintile'
     
     # Create table with selected data if switch is on
-    if display_table:
+    if show_table:
         table = dash_table.DataTable(
             id='table',
-            columns=[
-                {'name': col, 'id': col, 'type': 'numeric', 'format': Format(precision=3)} for col in selected_data.columns
-            ],
+            columns=[{
+                    'name': col, 
+                    'id': col, 
+                    'type': 'numeric', 
+                    'format': Format(precision=3)
+                    } for col in selected_data.columns
+                ],
             # selected_data without Country column
             data=selected_data.to_dict('records'),
             fixed_rows={'headers': True},
@@ -261,7 +285,7 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
                 'width': '90px', 
                 'maxWidth': '90px',
                 'textAlign': 'center'
-            },
+                },
             style_data={
                 'whiteSpace': 'normal',
                 'height': 'auto',
@@ -269,7 +293,7 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
                 'width': '90px', 
                 'maxWidth': '90px',
                 'textAlign': 'left'
-            },
+                },
             style_table={
                 'font-family': font_family, 
                 'height': '400px', 
@@ -332,15 +356,25 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
         )
 
         fig.update_xaxes(
-            title_text='',
+            title_text=None,
             dtick="M3",
-            tickformat='%b-%y'
-            )
+            tickformat='%b-%y',
+            automargin=True
+        )
         
-        fig.update_yaxes(title_text='') 
+        fig.update_yaxes(
+            title_text='Inflation rate (yoy)',
+            automargin=True
+        ) 
 
         fig.update_layout(
             title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}',
+            legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01
+            )
         )
 
     elif selected_figure == 'fig2':
@@ -353,11 +387,11 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
             color='Consumption category',
             opacity=opacity,
             custom_data= selected_data
-        )
+            )
 
         fig.update_traces(
             hovertemplate='<b>%{customdata[1]}</b><br>Date: %{x}<br>Effect on inflation inequality: %{y:.2f}<extra></extra>',
-        )
+            )
         
         if quantile == 'quintile':
             fig.add_trace(
@@ -369,8 +403,8 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
                     customdata= selected_data,
                     opacity=opacity,
                     hovertemplate='<b>Difference between inflation rates of bottom and top quintiles</b><br>%{x}: %{y:.2f}<extra></extra>'
-                )
-            )  
+                    )
+                )  
 
         elif quantile == 'quartile':
             fig.add_trace(
@@ -382,22 +416,24 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
                     customdata= selected_data,
                     opacity=opacity,
                     hovertemplate='<b>Difference between inflation rates of bottom and top quartiles</b><br>%{x}: %{y:.2f}<extra></extra>'
-                )
-            )   
+                    )
+                )   
              
         fig.update_xaxes(
-            title_text='',
+            title_text=None,
             dtick="M3",
-            tickformat='%b-%y'
+            tickformat='%b-%y',
+            automargin=True
             )
         
         fig.update_yaxes(
-            title_text=''
+            title_text=None,
+            automargin=True
             ) 
 
         fig.update_layout(
             title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}',
-        )
+            )
 
     elif selected_figure == 'fig3':
         
@@ -410,7 +446,7 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
             color='Main category',
             opacity=opacity,
             custom_data=selected_data
-        )
+            )
         
         fig.update_traces(
             marker=dict(size=7),
@@ -418,82 +454,69 @@ def update_selected_data(selected_country, selected_figure, display_table, is_mo
             hovertemplate='<b>%{customdata[2]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
             line=dict(width=2.5),
             opacity=opacity
-        )
+            )
 
         fig.update_xaxes(
             zeroline=True, 
             zerolinewidth=1,
-            zerolinecolor='grey'
-        )
+            zerolinecolor='grey',
+            automargin=True
+            )
 
         fig.update_yaxes(
             zeroline=True, 
             zerolinewidth=1,
             zerolinecolor='grey',
-        )
+            automargin=True
+            )
 
         fig.update_layout(
             title_text=f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}',
-        )
+            )
     
     # Set common layout options across figures
     fig.update_layout(
         dragmode=False,
         font_family=font_family,
         font_color= '#000000',
-        legend_title_text='',
-        updatemenus=[
-            dict(
-                type="buttons",
-                buttons=[
-                    dict(label="Show legend",
-                        method="relayout",
-                        visible=True,
-                        args=["showlegend", True]
-                        ),
-                    dict(label="Hide legend",
-                        method="relayout",
-                        args=["showlegend", False]
-                        )
-                ],
-                direction='right',
-                active=0,
-                showactive=True,
-                bgcolor= '#FFFFFF',
-                bordercolor= '#cccccc',
-                font_color= '#333333',
-                borderwidth= 1,
-                xanchor= 'left',
-                yanchor= 'top',
-                x=0,
-                y=-0.25
-            )
-        ]
-    )
+        margin={
+            'l':5, 
+            'r':40
+        },
+        legend=dict(
+            itemsizing='trace'
+        ),
+        legend_title_text=None,
+        showlegend=show_legend,
+        )
 
     # Set layout options for mobile devices
     if is_mobile:
+        # Set margins to zero
         fig.update_layout(
-            showlegend=False,
-            updatemenus=[dict(active=1)]
-        )
-
-    if is_mobile and selected_figure != 'fig3':
-        fig.update_xaxes(
-            dtick="M6",
-            tickformat='%b-%y'
+            margin={
+                'l':0, 
+                'r':0
+                }
             )
+
+        # Set x-axis tick format to month and year for fig 1 and 2
+        if selected_figure != 'fig3':
+            fig.update_xaxes(
+                dtick="M6",
+                tickformat='%b-%y'
+                )
 
     return [
             table,
             dcc.Graph(
                 id='figure',
                 figure=fig
-            ),
+                ),
             html.Div([
                 html.P(figure_descriptions[selected_figure], style={'font-family': font_family})
-            ])
-        ]
+                ])
+            ]
 
 if __name__ == '__main__':
     app.run_server(debug=True)

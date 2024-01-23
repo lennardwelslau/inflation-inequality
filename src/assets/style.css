@@ -1,22 +1,22 @@
 /* .dash-graph {
-    zoom: 0.6;
+    scale: 0.6;
 }
 
 @media (min-width: 475px) {
     .dash-graph {
-        zoom: 0.7;
+        scale: 0.7;
     }
 }
 
 @media (min-width: 768px) {
     .dash-graph {
-        zoom: 0.9;
+        scale: 0.9;
     }
 }
 
 @media (min-width: 1024px) {
     .dash-graph {
-        zoom: 1;
+        scale: 1;
     }
 } */
 
