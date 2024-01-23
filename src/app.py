@@ -474,8 +474,9 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         font_color= '#000000',
         margin={
             't':20,
+            'b':20,
             'l':5, 
-            'r':40
+            'r':40,
         },
         legend=dict(
             itemsizing='trace'
