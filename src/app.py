@@ -250,10 +250,15 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
     # Select df based on selected figure and country
     selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].drop(columns='Country').dropna(axis=1)
     
-    # If selected figure is Figure 3, drop show only Average inflation in 2023 in Data Table
+    # If selected figure is Figure 3, show only Average inflation in 2023 and drop COICOP
     if selected_figure == 'fig3':
-        for year in [2019, 2020, 2021, 2022]:
-            selected_data = selected_data.drop(columns=[f'Average inflation in {year}'])
+        selected_data = selected_data.drop(columns=[
+            'COICOP',
+            'Average inflation in 2019', 
+            'Average inflation in 2020', 
+            'Average inflation in 2021', 
+            'Average inflation in 2022'
+        ])
     
     # Define country-dependent variables
     if selected_country == 'BE':
