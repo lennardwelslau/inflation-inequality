@@ -373,13 +373,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         ) 
 
         fig.update_layout(
-            title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}',
-            legend=dict(
-                yanchor="top",
-                y=0.99,
-                xanchor="left",
-                x=0.01
-            )
+            title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}'
         )
 
     elif selected_figure == 'fig2':
@@ -502,14 +496,27 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
             margin={
                 'l':0, 
                 'r':0
-                }
+                },
+            legend=dict(
+                itemsizing='trace',
+                orientation='h',
+                yanchor='top',
+                y=-0.2,
+                xanchor='center',
+                x=0.5
+                )
             )
 
-        # Set x-axis tick format to month and year for fig 1 and 2
+        # Set legend position and x-axis tick format to month and year for fig 1 and 2
         if selected_figure != 'fig3':
             fig.update_xaxes(
                 dtick="M6",
                 tickformat='%b-%y'
+                )
+            fig.update_layout(
+                legend=dict(
+                    y=-0.1,
+                    )
                 )
 
     return [
