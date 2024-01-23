@@ -448,7 +448,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         fig.update_traces(
             marker=dict(size=7),
             selector=dict(mode='markers'),
-            hovertemplate='<b>%{customdata[2]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
+            hovertemplate='<b>%{customdata[1]}</b><br>Difference in consumption share: %{x:.2f}<br>Average inflation in 2023: %{y:.2f}<extra></extra>',
             line=dict(width=2.5),
             opacity=opacity
             )
