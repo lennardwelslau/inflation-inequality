@@ -363,7 +363,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         fig.update_xaxes(
             title_text=None,
             dtick="M3",
-            tickformat='%b-%y',
+            tickformat='%b\n%Y',
             automargin=True
         )
         
@@ -421,7 +421,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         fig.update_xaxes(
             title_text=None,
             dtick="M3",
-            tickformat='%b-%y',
+            tickformat='%b\n%Y',
             automargin=True
             )
         
@@ -510,12 +510,11 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
         # Set legend position and x-axis tick format to month and year for fig 1 and 2
         if selected_figure != 'fig3':
             fig.update_xaxes(
-                dtick="M6",
-                tickformat='%b-%y'
+                dtick="M6"
                 )
             fig.update_layout(
                 legend=dict(
-                    y=-0.1,
+                    y=-0.15,
                     )
                 )
 
