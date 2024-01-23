@@ -1,10 +1,13 @@
-import pathlib
-import pandas as pd
+
 from dash import Dash, html, dcc, dash_table, Input, Output, callback, State, clientside_callback
 from dash.dash_table.Format import Format
 import dash_daq as daq
 import plotly.express as px
 import plotly.graph_objects as go
+import pathlib
+import pandas as pd
+import textwrap
+
 
 app = Dash(
     __name__, 
@@ -311,7 +314,8 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
     # Retrieve the selected country's data for the chosen figure
     if selected_figure == 'fig1':
 
-        # Display Figure 1
+        title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}'
+
         fig = px.line(
             selected_data[['Date', f'Top {quantile}', f'Bottom {quantile}']].melt(id_vars='Date'),
             x='Date',
@@ -372,12 +376,10 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
             automargin=True
         ) 
 
-        fig.update_layout(
-            title_text=f'Figure 1: Inflation rate for top and bottom {quantile} - {country_dict[selected_country]}'
-        )
-
     elif selected_figure == 'fig2':
-        # Display Figure 2
+        
+        title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}'
+
         fig = px.bar(
             selected_data,
             x='Date',
@@ -430,13 +432,9 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
             automargin=True
             ) 
 
-        fig.update_layout(
-            title_text=f'Figure 2: Expenditure categories driving inflation inequality - {country_dict[selected_country]}',
-            )
-
     elif selected_figure == 'fig3':
-        
-        # Display Figure 3
+        title_text = f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}'
+
         fig = px.scatter(
             selected_data, 
             x='Difference in share of total expenditure', 
@@ -468,13 +466,10 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
             zerolinecolor='grey',
             automargin=True
             )
-
-        fig.update_layout(
-            title_text=f'Figure 3: Price growth and difference in importance of consumption categories - {country_dict[selected_country]}',
-            )
     
     # Set common layout options across figures
     fig.update_layout(
+        title_text = title_text,
         dragmode=False,
         font_family=font_family,
         font_color= '#000000',
@@ -493,7 +488,9 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
     if is_mobile:
         # Set margins to zero
         fig.update_layout(
+            title_text = '<br>'.join(textwrap.wrap(title_text, width=40)),
             margin={
+                't':110,
                 'l':0, 
                 'r':0
                 },
@@ -501,7 +498,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
                 itemsizing='trace',
                 orientation='h',
                 yanchor='top',
-                y=-0.2,
+                y=-0.25,
                 xanchor='center',
                 x=0.5
                 )
@@ -513,6 +510,11 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
                 dtick="M6"
                 )
             fig.update_layout(
+                margin={
+                    't':80,
+                    'l':0, 
+                    'r':0
+                    },
                 legend=dict(
                     y=-0.15,
                     )
