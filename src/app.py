@@ -253,11 +253,13 @@ def update_selected_data(selected_countries, selected_figure, show_table, show_l
     # Initiate list to hold figures
     figures = []
 
-    # Loop through selected countries, if only one selected, turn into list
+    # If only one country selected, turn into list
     if isinstance(selected_countries, str):
         selected_countries = [selected_countries]
-    for selected_country in selected_countries:
-
+    
+    # Loop through selected countries
+    for i, selected_country in enumerate(selected_countries):
+        
         # Select df based on selected figure and country
         selected_data = dfs[selected_figure].loc[dfs[selected_figure]['Country'] == selected_country].drop(columns='Country').dropna(axis=1)
         
@@ -475,6 +477,12 @@ def update_selected_data(selected_countries, selected_figure, show_table, show_l
                 automargin=True
                 )
         
+        # Update title text according to selected country
+        if len(selected_countries) > 1:
+            # insert letter to title text atfer 8th character
+            fig_letter = chr(97 + i)
+            title_text = title_text[:8]+fig_letter+title_text[8:]
+
         # Set common layout options across figures
         fig.update_layout(
             dragmode=False,
