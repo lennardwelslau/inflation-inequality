@@ -469,11 +469,11 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
     
     # Set common layout options across figures
     fig.update_layout(
-        title_text = title_text,
         dragmode=False,
         font_family=font_family,
         font_color= '#000000',
         margin={
+            't':20,
             'l':5, 
             'r':40
         },
@@ -488,9 +488,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
     if is_mobile:
         # Set margins to zero
         fig.update_layout(
-            title_text = '<br>'.join(textwrap.wrap(title_text, width=40)),
             margin={
-                't':110,
                 'l':0, 
                 'r':0
                 },
@@ -511,7 +509,6 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
                 )
             fig.update_layout(
                 margin={
-                    't':80,
                     'l':0, 
                     'r':0
                     },
@@ -522,6 +519,7 @@ def update_selected_data(selected_country, selected_figure, show_table, show_leg
 
     return [
             table,
+            html.H3(title_text, style={'font-family': font_family}),
             dcc.Graph(
                 id='figure',
                 figure=fig
